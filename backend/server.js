@@ -11,6 +11,12 @@ dotenv.config({ path: path.join(__dirname, 'configuration/config.env') });
 const app = express();
 const postRoutes = require('./routes/posts');
 
+
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self' https://vercel.live;");
+  next();
+});
+
 // Middleware
 const allowedOrigins = [process.env.UI_URI, 'https://blog-frontend-seven-wine.vercel.app/'];
 app.use(cors({
@@ -33,7 +39,8 @@ mongoose.connect(process.env.MONGO_URI, {
     useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('Connection error:', err));
-
+ 
+  
 // Routes
 app.use('/api/posts', postRoutes);
 
