@@ -12,7 +12,7 @@ const app = express();
 const postRoutes = require('./routes/posts');
 
 // Middleware
-const allowedOrigins = [process.env.UI_URI]; // Set your frontend URI here
+const allowedOrigins = [process.env.UI_URI, 'https://blog-frontend-seven-wine.vercel.app/'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
