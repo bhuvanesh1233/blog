@@ -12,7 +12,17 @@ const app = express();
 const postRoutes = require('./routes/posts');
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [process.env.UI_URI]; // Set your frontend URI here
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Ensure this path matches your actual folder structure
 
